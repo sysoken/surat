@@ -8,7 +8,7 @@
         </svg> -->
     </div>
     <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="">
-        <li class="nav-item"><a class="nav-link" href="index.html">
+        <li class="nav-item"><a class="nav-link" href="/surat/home.php">
                 <svg class="nav-icon">
                     <use xlink:href="/surat/vendors/@coreui/icons/svg/free.svg#cil-speedometer"></use>
                 </svg> Dashboard</a></li>
@@ -32,6 +32,7 @@
                 <li class="nav-item"><a class="nav-link" href="/surat/master/rek_travel.php"> Rek Travel</a></li>
             </ul>
         </li>
+        
         <li class="nav-title">Input Surat</li>
         <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
                 <svg class="nav-icon">

@@ -13,6 +13,8 @@
 <script src="/surat/vendors/@coreui/utils/js/coreui-utils.js"></script>
 <script src="/surat/js/main.js"></script>
 
+<script src="../sweetalert2.all.min.js"></script>
+<link rel="stylesheet" href="../sweetalert2.min.css">
 <script>
 </script>
 

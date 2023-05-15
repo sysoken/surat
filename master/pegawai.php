@@ -27,8 +27,7 @@
                             
                         </div> -->
                         <div class="card-body">
-                            <button type="button" class="btn btn-primary" data-coreui-toggle="modal"
-                                data-coreui-target="#exampleModal">
+                            <button type="button" class="btn btn-primary" data-coreui-toggle="modal" data-coreui-target="#exampleModal">
                                 Tambah Data
                             </button>
                         </div>
@@ -48,6 +47,7 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
+                                        <th>Foto</th>
                                         <th>Nama</th>
                                         <th>NIP</th>
                                         <th>Jabatan</th>
@@ -92,20 +92,36 @@
                     </div>
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Golongan</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                        <select class="form-select" aria-label="Default select example" id="golonganSelect">
+                            <option selected>Pilih golongan</option>
+                            <?php
+                            // Ambil data dari tabel tb_golongan
+                            $query = "SELECT nama_pangkat FROM tb_golongan";
+                            $result = $conn->query($query);
+
+                            // Loop melalui hasil query dan tampilkan opsi
+                            while ($row = $result->fetch_assoc()) {
+                                $namaPangkat = $row['nama_pangkat'];
+                                echo '<option value="' . $namaPangkat . '">' . $namaPangkat . '</option>';
+                            }
+                            ?>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Bidang</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                        <select class="form-select" aria-label="Default select example" id="bidangSelect">
+                            <option selected>Pilih bidang</option>
+                            <?php
+                            // Ambil data dari tabel tb_bidang
+                            $query = "SELECT bidang FROM tb_bidang";
+                            $result = $conn->query($query);
+
+                            // Loop melalui hasil query dan tampilkan opsi
+                            while ($row = $result->fetch_assoc()) {
+                                $bidang = $row['bidang'];
+                                echo '<option value="' . $bidang . '">' . $bidang . '</option>';
+                            }
+                            ?>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -115,9 +131,9 @@
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Status</label>
                         <select class="form-select" aria-label="Default select example">
-                            <option selected>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
+                            <option selected>Pilih Status</option>
+                            <option value="1">Menikah</option>
+                            <option value="2">Belum Menikah</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -143,67 +159,138 @@
     <!-- end modal -->
 
     <script>
-    $(document).ready(function() {
-        var table = $('#data-table').DataTable({
-            // "processing": true,
-            // "serverSide": true,
-            "ajax": {
-                "url": "get_data_master.php?data=pegawai",
-                "type": "POST"
-            },
-            "columns": [{
-                    "data": ""
+        $(document).ready(function() {
+            var table = $('#data-table').DataTable({
+                // "processing": true,
+                // "serverSide": true,
+                "ajax": {
+                    "url": "get_data_master.php?data=pegawai",
+                    "type": "POST"
                 },
-                {
-                    "data": "nama"
-                },
-                {
-                    "data": "nip"
-                },
-                {
-                    "data": "jabatan"
-                },
-                {
-                    "data": "kd_golongan"
-                },
-                {
-                    "data": "bidang"
-                },
-                {
-                    "data": "alamat"
-                },
-                {
-                    "data": "status"
-                },
-                {
-                    "data": "nama_bank"
-                },
-                {
-                    "data": "kode_rekening"
-                }
-            ],
-            "columnDefs": [{
-                "targets": 0,
-                "data": null,
-                "render": function(data, type, row, meta) {
-                    return meta.row + 1;
-                }
-            }],
-            "createdRow": function(row, data, dataIndex) {
-                // check if this is the last row
-                if (dataIndex === (table.rows().count() - 1)) {
-                    // add Edit button
-                    $(row).append(
-                        '<td><button class="btn btn-primary"><i class="cil-pencil"></i></button></td>'
+                "columns": [{
+                        "data": ""
+                    },
+                    {
+                        "data": "",
+                        "render": function(data, type, row, meta) {
+                            // Mengembalikan elemen gambar HTML dengan sumber gambar sesuai data
+                            return '<img src="' + row.foto +
+                                '" alt="Gambar" width="50" height="50">';
+                        }
+                    },
+                    {
+                        "data": "nama"
+                    },
+                    {
+                        "data": "nip"
+                    },
+                    {
+                        "data": "jabatan"
+                    },
+                    {
+                        "data": "kd_golongan"
+                    },
+                    {
+                        "data": "bidang"
+                    },
+                    {
+                        "data": "alamat"
+                    },
+                    {
+                        "data": "status"
+                    },
+                    {
+                        "data": "nama_bank"
+                    },
+                    {
+                        "data": "kode_rekening"
+                    }
+                ],
+                "columnDefs": [{
+                    "targets": 0,
+                    "data": null,
+                    "render": function(data, type, row, meta) {
+                        return meta.row + 1;
+                    }
+                }],
+                "createdRow": function(row, data, dataIndex) {
+                    // check if this is the last row
+                    if (dataIndex === (table.rows().count() - 1)) {
+                        // add Edit button
+                        $(row).append(
+                            '<td><button class="btn btn-primary"><i class="cil-pencil"></i></button></td>'
                         );
-                    // add Delete button
-                    $(row).append(
-                        '<td><button class="btn btn-danger"><i class="cil-trash"></i></button></td>'
+                        // add Delete button
+                        $(row).append(
+                            '<td><button class="btn btn-danger"><i class="cil-trash"></i></button></td>'
                         );
+                    }
                 }
-            }
+            });
+
+            // Menangani klik tombol "Save changes"
+            $(".btn-primary").click(function() {
+                // Mengambil nilai dari input form
+                var nama = $("#nama").val();
+                var nip = $("#nip").val();
+                var jabatan = $("#jabatan").val();
+                var golongan = $("#golonganSelect").val();
+                var bidang = $("#bidangSelect").val();
+                var alamat = $("#alamat").val();
+                var status = $("#statusSelect").val();
+                var namaBank = $("#nama_bank").val();
+                var kodeRekening = $("#kode_rekening").val();
+                var foto = $("#formFile")[0].files[0];
+
+                // Membuat objek FormData untuk mengirim data dengan gambar
+                var formData = new FormData();
+                formData.append("nama", nama);
+                formData.append("nip", nip);
+                formData.append("jabatan", jabatan);
+                formData.append("golongan", golongan);
+                formData.append("bidang", bidang);
+                formData.append("alamat", alamat);
+                formData.append("status", status);
+                formData.append("nama_bank", namaBank);
+                formData.append("kode_rekening", kodeRekening);
+                formData.append("foto", foto);
+
+                // Mengirim data menggunakan Ajax
+                $.ajax({
+                    url: "simpan_data_pegawai.php",
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        // Menampilkan pesan sukses atau error
+                        if (response == "success") {
+                            Swal.fire(
+                                'Success',
+                                'Data Berhasil Disimpan',
+                                'success'
+                            )
+                            // Lakukan tindakan lain, seperti memperbarui tabel atau mereset form
+                        } else {
+                            Swal.fire(
+                                'Error',
+                                'Gagal Menyimpan data pegawai',
+                                'error'
+                            )
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr.responseText);
+                        // alert("Terjadi kesalahan dalam menyimpan data pegawai.");
+                        Swal.fire(
+                            'Error',
+                            'Terjadi kesalahan dalam menyimpan data pegawai',
+                            'error'
+                        )
+                    }
+                });
+            });
         });
-    });
     </script>
 
     <?php include '../template/footer.php'; ?>
